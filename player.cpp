@@ -1,6 +1,7 @@
 
 #include "player.h"
 
+float Yaccel = 0;
 //==========================================================================================================================================================
 //==========================================================================================================================================================
 // default constructor
@@ -52,25 +53,6 @@ void Player::draw()
 //=============================================================================
 void Player::update(float frameTime)
 {
-	//Movement
-	//======================================================================================
-	if (input->isKeyDown(VK_LEFT)) // Move left
-	{
-		spriteData.x -= frameTime * 2 * velocity.x;         // move player along x
-	}
-	if (input->isKeyDown(VK_RIGHT)) // Move right
-	{
-		spriteData.x += frameTime * 2 * velocity.x;         // move player along x
-	}
-	if (input->isKeyDown(VK_UP))
-	{
-		spriteData.y += frameTime * 2 * velocity.y;
-	}
-	if (input->isKeyDown(VK_DOWN))
-	{
-		spriteData.y -= frameTime * 2 * velocity.y;
-	}
-
 	// Screen movement restriction
 	//===============================================================================
 	if (spriteData.x < 0)
@@ -90,29 +72,50 @@ void Player::update(float frameTime)
 	if (spriteData.y > GAME_HEIGHT - spriteData.height)
 	{
 		spriteData.y = GAME_HEIGHT - spriteData.height;
+		velocity.y = -PlayerNS::SPEED;
 	}
 
+	//Horizontal Movement
+	//======================================================================================
+	if (input->isKeyDown(VK_LEFT)) // Move left
+	{
+		spriteData.x -= frameTime * velocity.x;         // move player along x
+	}
+	if (input->isKeyDown(VK_RIGHT)) // Move right
+	{
+		spriteData.x += frameTime * velocity.x;         // move player along x
+	}
+
+	//Vertical Movement / Gravity--- DeltaV.y = acceleration
+	//======================================================================================
+
+	float vely;
+	vely = velocity.y+200;
+
+	if (input->isKeyDown(VK_DOWN))
+	{
+		spriteData.y -= frameTime * velocity.y;
+	}
+
+	if (deltaV.y==0) // "AT REST"
+	{
+		if (input->wasKeyPressed(VK_UP))
+		{
+			Yaccel += 200*frameTime;
+		}
+	}
+	if (Yaccel > 0)
+	{
+		Yaccel -= 1;
+	}
+	if (Yaccel < 0)
+	{
+		Yaccel = 0;
+	}
+	spriteData.y -= frameTime * (vely);
+	deltaV.y = Yaccel;
 	Entity::update(frameTime);
 
-	//// Bounce off walls
- //   if (spriteData.x > GAME_WIDTH- PlayerNS::WIDTH)    // if hit right screen edge
- //   {
- //       spriteData.x = GAME_WIDTH- PlayerNS::WIDTH;    // position at right screen edge
- //       velocity.x = -velocity.x;                   // reverse X direction
- //   } else if (spriteData.x < 0)                    // else if hit left screen edge
- //   {
- //       spriteData.x = 0;                           // position at left screen edge
- //       velocity.x = -velocity.x;                   // reverse X direction
- //   }
- //   if (spriteData.y > GAME_HEIGHT- PlayerNS::HEIGHT)  // if hit bottom screen edge
- //   {
- //       spriteData.y = GAME_HEIGHT- PlayerNS::HEIGHT;  // position at bottom screen edge
- //       velocity.y = -velocity.y;                   // reverse Y direction
- //   } else if (spriteData.y < 0)                    // else if hit top screen edge
- //   {
- //       spriteData.y = 0;                           // position at top screen edge
- //       velocity.y = -velocity.y;                   // reverse Y direction
- //   }
 }
 
 //=============================================================================

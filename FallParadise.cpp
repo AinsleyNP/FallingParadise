@@ -1,9 +1,3 @@
-// Programming 2D Games
-// Copyright (c) 2011 by: 
-// Charles Kelly
-// Draw animated spaceships with collision and shield
-// Chapter 6 spacewar.cpp v1.0
-// This class is the core of the game
 
 #include "FallParadise.h"
 
@@ -61,7 +55,6 @@ void FallParadise::initialize(HWND hwnd)
 //=============================================================================
 void FallParadise::update()
 {
-
 	planet.update(frameTime);
 	player.update(frameTime);
 }

@@ -45,6 +45,9 @@
     <ClCompile Include="FallParadise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="playerState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FallParadise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="playerState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

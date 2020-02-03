@@ -61,7 +61,7 @@ void FallParadise::initialize(HWND hwnd)
 //=============================================================================
 void FallParadise::update()
 {
-	
+
 	planet.update(frameTime);
 	player.update(frameTime);
 }
@@ -81,9 +81,6 @@ void FallParadise::collisions()
 	// if collision between ship and planet
 	if (player.collidesWith(planet, collisionVector))
 	{
-		// bounce off planet
-		player.bounce(collisionVector, planet);
-		player.damage(PLANET);
 	}
 }
 

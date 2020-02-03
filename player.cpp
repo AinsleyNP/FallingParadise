@@ -1,28 +1,6 @@
 
 #include "player.h"
 
-
-
-class playerstand : public playerState
-{
-public:
-	virtual void handleInput(Player*& player, Input* input)
-	{
-		if (input->isKeyDown(VK_SPACE))
-		{
-			player->state_ = &(playerState.jump);
-			//jump
-		}
-		//other codes
-	}
-
-};
-
-class playerjump : public playerState
-{
-
-};
-
 //==========================================================================================================================================================
 //==========================================================================================================================================================
 // default constructor
@@ -30,32 +8,32 @@ class playerjump : public playerState
 //==========================================================================================================================================================
 Player::Player() : Entity()
 {
-    spriteData.width = PlayerNS::WIDTH;           // size of Ship1
-    spriteData.height = PlayerNS::HEIGHT;
-    spriteData.x = PlayerNS::X;                   // location on screen
-    spriteData.y = PlayerNS::Y;
-    spriteData.rect.bottom = PlayerNS::HEIGHT;    // rectangle to select parts of an image
-    spriteData.rect.right = PlayerNS::WIDTH;
-    velocity.x = 0;                             // velocity X
-    velocity.y = 0;                             // velocity Y
-    frameDelay = PlayerNS::PLAYER_ANIMATION_DELAY;
-    startFrame = PlayerNS::PLAYER_START_FRAME;     // first frame of ship animation
-    endFrame     = PlayerNS::PLAYER_END_FRAME;     // last frame of ship animation
-    currentFrame = startFrame;
-    radius = PlayerNS::WIDTH/2.0;
-    shieldOn = false;
-    mass = PlayerNS::MASS;
-    collisionType = entityNS::CIRCLE;
+	spriteData.width = PlayerNS::WIDTH;           // size of player
+	spriteData.height = PlayerNS::HEIGHT;
+	spriteData.x = PlayerNS::X;                   // location on screen
+	spriteData.y = PlayerNS::Y;
+	spriteData.rect.bottom = PlayerNS::HEIGHT;    // rectangle to select parts of an image
+	spriteData.rect.right = PlayerNS::WIDTH;
+	velocity.x = 0;                             // velocity X
+	velocity.y = 0;                             // velocity Y
+	frameDelay = PlayerNS::PLAYER_ANIMATION_DELAY;
+	startFrame = PlayerNS::PLAYER_START_FRAME;     // first frame of player animation
+	endFrame = PlayerNS::PLAYER_END_FRAME;     // last frame of player animation
+	currentFrame = startFrame;
+	radius = PlayerNS::WIDTH / 2.0;
+	shieldOn = false;
+	mass = PlayerNS::MASS;
+	collisionType = entityNS::CIRCLE;
 }
 
 //=============================================================================
 // Initialize the Ship.
 // Post: returns true if successful, false if failed
 //=============================================================================
-bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
-    TextureManager *textureM)
+bool Player::initialize(Game* gamePtr, int width, int height, int ncols,
+	TextureManager* textureM)
 {
-    return(Entity::initialize(gamePtr, width, height, ncols, textureM));
+	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
 //=============================================================================
@@ -63,8 +41,8 @@ bool Player::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Player::draw()
 {
-    Image::draw();              // draw ship
-    
+	Image::draw();              // draw ship
+
 }
 
 //=============================================================================
@@ -84,20 +62,38 @@ void Player::update(float frameTime)
 	{
 		spriteData.x += frameTime * 2 * velocity.x;         // move player along x
 	}
+	if (input->isKeyDown(VK_UP))
+	{
+		spriteData.y += frameTime * 2 * velocity.y;
+	}
+	if (input->isKeyDown(VK_DOWN))
+	{
+		spriteData.y -= frameTime * 2 * velocity.y;
+	}
 
 	// Screen movement restriction
 	//===============================================================================
 	if (spriteData.x < 0)
 	{
-		spriteData.x=0;
+		spriteData.x = 0;
 	}
 	if (spriteData.x > GAME_WIDTH - spriteData.width)
 	{
 		spriteData.x = GAME_WIDTH - spriteData.width;
 	}
 
-    Entity::update(frameTime);
-	
+	if (spriteData.y < 0)
+	{
+		spriteData.y = 0;
+	}
+
+	if (spriteData.y > GAME_HEIGHT - spriteData.height)
+	{
+		spriteData.y = GAME_HEIGHT - spriteData.height;
+	}
+
+	Entity::update(frameTime);
+
 	//// Bounce off walls
  //   if (spriteData.x > GAME_WIDTH- PlayerNS::WIDTH)    // if hit right screen edge
  //   {

@@ -31,7 +31,6 @@ class Player : public Entity
 private:
 	bool    shieldOn;
 	Image   shield;
-	
 
 public:
 	// constructor
@@ -43,25 +42,21 @@ public:
 		TextureManager* textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
+
+	//virtual void handleInput(Input* input)
+	//{
+	//	state_->handleInput(this, input);
+	//}
+	//virtual void update()
+	//{
+	//	state_->update(this);
+	//}
+
+
 };
 
-// defining playerState
-class playerState
-{
-private:
-	playerState* state_;
-public:
-	static playerstand stand;
-	static playerjump jump;
-	virtual ~playerState() {}
-	virtual void handleInput(Player*& player, Input* input)
-	{
-		state_->handleInput(player, input);
-	}
-	virtual void update(Player*& player)
-	{
-		state_->update(player);
-	}
-};
+
+
+
 #endif
 

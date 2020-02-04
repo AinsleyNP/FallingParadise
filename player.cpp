@@ -74,7 +74,7 @@ void Player::update(float frameTime)
 		spriteData.y = 0;
 	}
 
-	if (spriteData.y > GAME_HEIGHT - spriteData.height)
+	if (spriteData.y > GAME_HEIGHT - spriteData.height) //Ported into states
 	{
 		spriteData.y = GAME_HEIGHT - spriteData.height;
 		velocity.y = -PlayerNS::SPEED;
@@ -83,7 +83,7 @@ void Player::update(float frameTime)
 		vely = 0;
 	}
 
-	//Horizontal Movement		--- to be changed to changing velocity instead of sprite position
+	//Horizontal Movement		--- to be changed to changing velocity instead of sprite position -- Ported into states
 	//======================================================================================
 	if (input->isKeyDown(VK_LEFT)) // Move left
 	{
@@ -108,7 +108,7 @@ void Player::update(float frameTime)
 
 	if (vely==0) // "AT REST"
 	{
-		if (input->wasKeyPressed(VK_UP))
+		if (input->wasKeyPressed(VK_UP)) //Jump
 		{
 			Yaccel += 500*frameTime;
 		}
@@ -121,7 +121,7 @@ void Player::update(float frameTime)
 			vely = 750;
 			Yaccel = 0;
 		}
-		else					//Gravi
+		else					//Gravity
 		{
 			deltaV.y = Yaccel;
 		}

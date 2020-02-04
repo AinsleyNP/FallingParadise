@@ -22,7 +22,7 @@ Entity::Entity() : Image()
     deltaV.y = 0.0;
     active = true;                  // the entity is active
     rotatedBoxReady = false;
-    collisionType = entityNS::CIRCLE;
+    collisionType = entityNS::BOX;
     health = 100;
     gravity = entityNS::GRAVITY;
 }
@@ -93,13 +93,16 @@ bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector)
     if (collisionType == entityNS::CIRCLE && ent.getCollisionType() == entityNS::CIRCLE)
         return collideCircle(ent, collisionVector);
     // If both entities are BOX collision
+
     if (collisionType == entityNS::BOX && ent.getCollisionType() == entityNS::BOX)
         return collideBox(ent, collisionVector);
-    // All other combinations use separating axis test
+ 
+	// All other combinations use separating axis test
     // If neither entity uses CIRCLE collision
     if (collisionType != entityNS::CIRCLE && ent.getCollisionType() != entityNS::CIRCLE)
         return collideRotatedBox(ent, collisionVector);
-    else    // one of the entities is a circle
+    
+	else    // one of the entities is a circle
         if (collisionType == entityNS::CIRCLE)  // if this entity uses CIRCLE collision
         {
             // Check for collision from other box with our circle
@@ -108,7 +111,8 @@ bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector)
             collisionVector *= -1;              // reverse collision vector
             return collide;
         }
-        else    // the other entity uses CIRCLE collision
+    
+		else    // the other entity uses CIRCLE collision
             return collideRotatedBoxCircle(ent, collisionVector);
     return false;
 }

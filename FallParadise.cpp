@@ -71,9 +71,10 @@ void FallParadise::ai()
 void FallParadise::collisions()
 {
 	VECTOR2 collisionVector;
-	// if collision between ship and planet
+	// if collision between player and "platform"
 	if (player.collidesWith(planet, collisionVector))
 	{
+		player.bounce(collisionVector,planet);
 	}
 }
 

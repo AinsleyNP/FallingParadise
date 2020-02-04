@@ -53,6 +53,8 @@ void Player::draw()
 //=============================================================================
 void Player::update(float frameTime)
 {
+	float vely;
+	vely = velocity.y + 200;
 	// Screen movement restriction
 	//===============================================================================
 	if (spriteData.x < 0)
@@ -75,6 +77,7 @@ void Player::update(float frameTime)
 		velocity.y = -PlayerNS::SPEED;
 		deltaV.y = 0;
 		Yaccel = 0;
+		vely = 0;
 	}
 
 	//Horizontal Movement
@@ -91,12 +94,9 @@ void Player::update(float frameTime)
 	//Vertical Movement / Gravity--- DeltaV.y = acceleration
 	//======================================================================================
 
-	float vely;
-	vely = velocity.y+200;
-
 	if (input->isKeyDown(VK_DOWN))
 	{
-		spriteData.y -= frameTime * velocity.y;
+		Yaccel -= 200 * frameTime;
 	}
 
 	if (deltaV.y==0) // "AT REST"
@@ -106,13 +106,21 @@ void Player::update(float frameTime)
 			Yaccel += 200*frameTime;
 		}
 	}
-	if (velocity.y != -200)
+	if (Yaccel != 0)
 	{
 		Yaccel -= 2;
+		if (velocity.y <-750)
+		{
+			vely = 750;
+			Yaccel = 0;
+		}
+		else
+		{
+			deltaV.y = Yaccel;
+		}
 	}
 
 	spriteData.y -= frameTime * (vely);
-	deltaV.y = Yaccel;
 	Entity::update(frameTime);
 
 }

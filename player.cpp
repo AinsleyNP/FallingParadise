@@ -73,6 +73,8 @@ void Player::update(float frameTime)
 	{
 		spriteData.y = GAME_HEIGHT - spriteData.height;
 		velocity.y = -PlayerNS::SPEED;
+		deltaV.y = 0;
+		Yaccel = 0;
 	}
 
 	//Horizontal Movement
@@ -104,14 +106,11 @@ void Player::update(float frameTime)
 			Yaccel += 200*frameTime;
 		}
 	}
-	if (Yaccel > 0)
+	if (velocity.y != -200)
 	{
-		Yaccel -= 1;
+		Yaccel -= 2;
 	}
-	if (Yaccel < 0)
-	{
-		Yaccel = 0;
-	}
+
 	spriteData.y -= frameTime * (vely);
 	deltaV.y = Yaccel;
 	Entity::update(frameTime);

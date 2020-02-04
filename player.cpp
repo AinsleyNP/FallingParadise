@@ -54,7 +54,10 @@ void Player::draw()
 void Player::update(float frameTime)
 {
 	float vely;
-	vely = velocity.y + 200;
+	vely = velocity.y;
+	float velx;
+	velx = velocity.x ;
+
 	// Screen movement restriction
 	//===============================================================================
 	if (spriteData.x < 0)
@@ -80,18 +83,22 @@ void Player::update(float frameTime)
 		vely = 0;
 	}
 
-	//Horizontal Movement
+	//Horizontal Movement		--- to be changed to changing velocity instead of sprite position
 	//======================================================================================
 	if (input->isKeyDown(VK_LEFT)) // Move left
 	{
-		spriteData.x -= frameTime * velocity.x;         // move player along x
+		velx -= 100;         // move player along x
 	}
-	if (input->isKeyDown(VK_RIGHT)) // Move right
+	else if (input->isKeyDown(VK_RIGHT)) // Move right
 	{
-		spriteData.x += frameTime * velocity.x;         // move player along x
+		velx += 100;         // move player along x
+	}
+	else
+	{
+		velx = 0;
 	}
 
-	//Vertical Movement / Gravity--- DeltaV.y = acceleration
+	//Vertical Movement / Gravity   --- DeltaV.y = acceleration	 --- Will be ported into states
 	//======================================================================================
 
 	if (input->isKeyDown(VK_DOWN))
@@ -99,27 +106,30 @@ void Player::update(float frameTime)
 		Yaccel -= 200 * frameTime;
 	}
 
-	if (deltaV.y==0) // "AT REST"
+	if (vely==0) // "AT REST"
 	{
 		if (input->wasKeyPressed(VK_UP))
 		{
-			Yaccel += 200*frameTime;
+			Yaccel += 500*frameTime;
 		}
 	}
 	if (Yaccel != 0)
 	{
 		Yaccel -= 2;
-		if (velocity.y <-750)
+		if (velocity.y <-750)	// Terminal Velocity
 		{
 			vely = 750;
 			Yaccel = 0;
 		}
-		else
+		else					//Gravi
 		{
 			deltaV.y = Yaccel;
 		}
 	}
 
+
+	//Movement based on velocity
+	spriteData.x += frameTime * velx;
 	spriteData.y -= frameTime * (vely);
 	Entity::update(frameTime);
 

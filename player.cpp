@@ -3,7 +3,6 @@
 
 Player::~Player()
 {
-	delete state_;
 }
 
 float Yaccel = 0;
@@ -108,7 +107,7 @@ void Player::update(float frameTime)
 
 	if (input->isKeyDown(VK_DOWN))
 	{
-		Yaccel -= 200 * frameTime;
+		state_ = &(PlayerState(standingState(update(jumpingState))));
 	}
 
 	if (vely==0) // "AT REST"
@@ -118,7 +117,7 @@ void Player::update(float frameTime)
 			Yaccel += 500*frameTime;
 		}
 	}
-	if (Yaccel != 0)
+	if (deltaV.y != 0)
 	{
 		Yaccel -= 2;
 		if (velocity.y <-750)	// Terminal Velocity
@@ -154,7 +153,7 @@ void Player::handleInput(Player*& player, Input* input)
 	state_->handleInput(*this, input);
 }
 
-void Player::updateState(Player*& player)
+void Player::updateState(Player*& player)	//From Player
 {
-	state_->updateState(*this);
+	state_->updateState(*this);				//From PlayerState
 }

@@ -5,9 +5,7 @@
 // States
 //=============================================================================
 
-
-PlayerState::~PlayerState() {
-}
+PlayerState::~PlayerState() {}
 
 void PlayerState::setState(Player& player, PlayerState* state) {
 	PlayerState* aux = player.state_;
@@ -15,6 +13,7 @@ void PlayerState::setState(Player& player, PlayerState* state) {
 	delete aux;
 }
 
+void PlayerState::updateState(Player& player) {}
 
 // Standing State
 standingState::~standingState(){}

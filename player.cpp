@@ -1,6 +1,11 @@
 
 #include "player.h"
 
+Player::~Player()
+{
+	delete state_;
+}
+
 float Yaccel = 0;
 //==========================================================================================================================================================
 //==========================================================================================================================================================
@@ -118,7 +123,7 @@ void Player::update(float frameTime)
 		Yaccel -= 2;
 		if (velocity.y <-750)	// Terminal Velocity
 		{
-			vely = 750;
+			vely = -750;
 			Yaccel = 0;
 		}
 		else					//Gravity
@@ -131,6 +136,7 @@ void Player::update(float frameTime)
 	//Movement based on velocity
 	spriteData.x += frameTime * velx;
 	spriteData.y -= frameTime * (vely);
+
 	Entity::update(frameTime);
 
 }
@@ -143,3 +149,12 @@ void Player::damage(WEAPON weapon)
 
 }
 
+void Player::handleInput(Player*& player, Input* input)
+{
+	state_->handleInput(*this, input);
+}
+
+void Player::updateState(Player*& player)
+{
+	state_->updateState(*this);
+}

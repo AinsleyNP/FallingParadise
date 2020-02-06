@@ -5,6 +5,9 @@
 
 #include "entity.h"
 #include "constants.h"
+#include "playerState.h"
+
+class PlayerState;
 
 namespace PlayerNS
 {
@@ -24,9 +27,11 @@ namespace PlayerNS
 // inherits from Entity class
 class Player : public Entity
 {
+	friend class PlayerState;
 private:
 	bool    shieldOn;
 	Image   shield;
+	PlayerState* state_;
 
 public:
 	// constructor
@@ -38,18 +43,11 @@ public:
 		TextureManager* textureM);
 	void update(float frameTime);
 	void damage(WEAPON);
-
-	//virtual void handleInput(Input* input)
-	//{
-	//	state_->handleInput(this, input);
-	//}
-	//virtual void update()
-	//{
-	//	state_->update(this);
-	//}
-
-
+	~Player();
+	virtual void handleInput(Player*& player, Input* input);
+	virtual void updateState(Player*& player);
 };
+
 
 
 

@@ -1,11 +1,16 @@
 
 #include "FallParadise.h"
 
+using namespace FallingParadiseNS;
+
 //=============================================================================
 // Constructor
 //=============================================================================
 FallParadise::FallParadise()
-{}
+{
+	mapX = 0;
+	mapY = -500;
+}
 
 //=============================================================================
 // Destructor
@@ -49,7 +54,15 @@ void FallParadise::initialize(HWND hwnd)
 	player.setVelocity(VECTOR2(PlayerNS::SPEED, -PlayerNS::SPEED)); // VECTOR2(X, Y)
 	return;
 
+	// map textures
+	if (!tileTextures.initialize(graphics, TITE_TEXTURES))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing tile textures"));
 
+	// tile image
+	if (!tile.initialize(graphics, TEXTURE_SIZE, TEXTURE_SIZE, TEXTURE_COLS, &tileTextures))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing tile"));
+	tile.setFrames(0, 0);
+	tile.setCurrentFrame(0);
 }
 
 //=============================================================================
@@ -57,8 +70,36 @@ void FallParadise::initialize(HWND hwnd)
 //=============================================================================
 void FallParadise::update()
 {
+	float playerX;
+	float playerY;
+
 	planet.update(frameTime);
 	player.update(frameTime);
+
+	// SCROLLING STUFF
+	if (mapY >= GAME_HEIGHT)
+	{
+		mapY = -TEXTURE_SIZE * MAP_HEIGHT - 128;
+	}
+
+	// Vertical "Scrolling"
+	playerY = player.getY();
+	if (playerY < GAME_HEIGHT / 2)
+	{
+		player.setY(GAME_HEIGHT / 2 - 1); // So ship doesnt go past half way(ish)
+		if (input->isKeyDown(VK_UP))
+		{
+			mapY -= player.getVelocity().y * frameTime * 3;
+		}
+		else
+		{
+			mapY -= player.getVelocity().y * frameTime * 0.5;
+		}
+	}
+	else
+	{
+		mapY -= player.getVelocity().y * frameTime * 0.5;
+	}
 }
 
 //=============================================================================
@@ -87,6 +128,23 @@ void FallParadise::render()
 {
 	graphics->spriteBegin();                // begin drawing sprites
 
+	// DRAW "TILES"
+	for (int col = 0; col < MAP_WIDTH; col++)       // for each column of map
+	{
+		tile.setX((float)(col * TEXTURE_SIZE));	// set tile X
+		for (int row = 0; row < MAP_HEIGHT; row++)    // for each row of map
+		{
+			if (tileMap[row][col] >= 0)          // if tile present
+			{
+				tile.setCurrentFrame(tileMap[row][col]);    // set tile texture
+				tile.setY((float)(row * TEXTURE_SIZE) + mapY);   // set tile Y
+				// if tile on screen
+				if (tile.getY() > -TEXTURE_SIZE && tile.getY() < GAME_HEIGHT)
+					tile.draw();                // draw tile
+			}
+		}
+	}
+
 	nebula.draw();                          // add the orion nebula to the scene
 	planet.draw();                          // add the planet to the scene
 	player.draw();                           // add the spaceship to the scene
@@ -102,6 +160,8 @@ void FallParadise::releaseAll()
 {
 	nebulaTexture.onLostDevice();
 	gameTextures.onLostDevice();
+	tileTextures.onLostDevice();
+
 	Game::releaseAll();
 	return;
 }
@@ -114,6 +174,7 @@ void FallParadise::resetAll()
 {
 	gameTextures.onResetDevice();
 	nebulaTexture.onResetDevice();
+	tileTextures.onResetDevice();
 	Game::resetAll();
 	return;
 }

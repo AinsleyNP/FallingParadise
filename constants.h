@@ -48,6 +48,7 @@ const float MASS_PLAYER = 5.0f;
 // graphic images
 const char NEBULA_IMAGE[] =   "pictures\\orion.jpg";     // photo source NASA/courtesy of nasaimages.org 
 const char TEXTURES_IMAGE[] = "pictures\\textures.png";  // game textures
+const char TITE_TEXTURES[] = "pictures\\tiles.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

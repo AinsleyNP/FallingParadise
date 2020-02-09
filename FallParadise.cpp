@@ -48,6 +48,8 @@ void FallParadise::initialize(HWND hwnd)
 	player.setY(GAME_HEIGHT / 4);
 	player.setVelocity(VECTOR2(PlayerNS::SPEED, -PlayerNS::SPEED)); // VECTOR2(X, Y)
 	return;
+
+
 }
 
 //=============================================================================

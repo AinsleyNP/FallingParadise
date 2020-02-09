@@ -15,14 +15,15 @@ void PlayerState::setState(Player& player, PlayerState* state) {
 
 void PlayerState::updateState(Player& player) {}
 
+
 // Standing State
 standingState::~standingState(){}
 
 void standingState::handleInput(Player& player, Input* input)
 {
-	
-	if (input->wasKeyPressed(VK_SPACE)) 
+	if (input->isKeyDown(VK_SPACE)) 
 	{
+		player.setX(100);
 		setState(player, new jumpingState());
 	}
 }
@@ -36,9 +37,15 @@ jumpingState::~jumpingState() {}
 
 void jumpingState::handleInput(Player& player, Input* input) 
 {
-	player.setDeltaV(VECTOR2(0, 200));
+
 }
 void jumpingState::updateState(Player& player)
 {
-	
+	player.setDeltaV(VECTOR2(0, 200));
+	float X = player.getX();
+	if (X==0)
+	{
+		setState(player, new standingState());
+	}
+
 }

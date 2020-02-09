@@ -29,6 +29,7 @@ Player::Player() : Entity()
 	shieldOn = false;
 	mass = PlayerNS::MASS;
 	collisionType = entityNS::CIRCLE;
+	state_=(new standingState);
 }
 
 //=============================================================================
@@ -107,19 +108,19 @@ void Player::update(float frameTime)
 
 	if (input->isKeyDown(VK_DOWN))
 	{
-		state_ = &(PlayerState(standingState(update(jumpingState))));
+		Yaccel -= 200 * frameTime;
 	}
 
 	if (vely==0) // "AT REST"
 	{
 		if (input->wasKeyPressed(VK_UP)) //Jump
 		{
-			Yaccel += 500*frameTime;
+			Yaccel += 5000*frameTime;
 		}
 	}
-	if (deltaV.y != 0)
+	if (Yaccel != 0)
 	{
-		Yaccel -= 2;
+		Yaccel -= 1;
 		if (velocity.y <-750)	// Terminal Velocity
 		{
 			vely = -750;

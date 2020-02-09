@@ -11,8 +11,9 @@ class PlayerState
 {
 public:
 	virtual void handleInput(Player& player, Input* input) = 0;
-	virtual void updateState(Player& player);
+	virtual void updateState(Player& player) = 0;
 	virtual ~PlayerState();
+
 protected:
 	void setState(Player& player, PlayerState* st);
 };

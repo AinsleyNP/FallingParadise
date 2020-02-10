@@ -46,12 +46,17 @@ private:
 	TextureManager nebulaTexture;   // nebula texture
 	TextureManager gameTextures;    // game texture
 	TextureManager tileTextures;
+	TextureManager mainMenuTexture;	// main menu texture
 	Player  player;           // player
 	Planet  planet;         // the planet
 	Image   nebula;         // backdrop image
-	Image tile;
+	Image tile;		
+	Image mainMenu;		    // main menu 
 	float mapX;
 	float mapY;
+
+	bool menu = true;
+	bool over = false;
 	
 public:
 	// Constructor

@@ -36,6 +36,17 @@ void FallParadise::initialize(HWND hwnd)
 	if (!gameTextures.initialize(graphics, TEXTURES_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game textures"));
 
+	// main menu texture
+	if (!mainMenuTexture.initialize(graphics, MAINMENU_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing main menu texture"));
+
+	// main menu image
+	if (!mainMenu.initialize(graphics, 0, 0, 0, &mainMenuTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing main menu"));
+	// place main menu in center of screen
+	mainMenu.setX(GAME_WIDTH * 0.5f - mainMenu.getWidth() * 0.5f);
+	mainMenu.setY(GAME_HEIGHT * 0.5f - mainMenu.getHeight() * 0.5f);
+
 	// nebula image
 	if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula"));
@@ -100,6 +111,19 @@ void FallParadise::update()
 	{
 		mapY -= player.getVelocity().y * frameTime * 0.5;
 	}
+
+	// checks for return key press
+	// game starts if key pressed
+	if (input->wasKeyPressed(VK_RETURN))
+	{
+		menu = false;
+	}
+	// checks for escape key press
+	// game application quits if key pressed
+	if (input->wasKeyPressed(VK_ESCAPE))
+	{
+		PostQuitMessage(0);
+	}
 }
 
 //=============================================================================
@@ -148,6 +172,7 @@ void FallParadise::render()
 	nebula.draw();                          // add the orion nebula to the scene
 	planet.draw();                          // add the planet to the scene
 	player.draw();                           // add the spaceship to the scene
+	mainMenu.draw();						// add the main menu to the scene
 
 	graphics->spriteEnd();                  // end drawing sprites
 }
@@ -161,6 +186,7 @@ void FallParadise::releaseAll()
 	nebulaTexture.onLostDevice();
 	gameTextures.onLostDevice();
 	tileTextures.onLostDevice();
+	mainMenuTexture.onLostDevice();
 
 	Game::releaseAll();
 	return;
@@ -175,6 +201,7 @@ void FallParadise::resetAll()
 	gameTextures.onResetDevice();
 	nebulaTexture.onResetDevice();
 	tileTextures.onResetDevice();
+	mainMenuTexture.onResetDevice();
 	Game::resetAll();
 	return;
 }

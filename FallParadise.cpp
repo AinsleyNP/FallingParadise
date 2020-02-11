@@ -1,5 +1,7 @@
 
 #include "FallParadise.h"
+#include <vector>
+#include <time.h>
 
 using namespace FallingParadiseNS;
 
@@ -9,7 +11,7 @@ using namespace FallingParadiseNS;
 FallParadise::FallParadise()
 {
 	mapX = 0;
-	mapY = -500;
+	mapY = -GAME_HEIGHT;
 }
 
 //=============================================================================
@@ -55,12 +57,13 @@ void FallParadise::initialize(HWND hwnd)
 	return;
 
 	// map textures
-	if (!tileTextures.initialize(graphics, TITE_TEXTURES))
+	if (!tileTextures.initialize(graphics, TILE_TEXTURES))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing tile textures"));
-
+	
 	// tile image
 	if (!tile.initialize(graphics, TEXTURE_SIZE, TEXTURE_SIZE, TEXTURE_COLS, &tileTextures))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing tile"));
+	tile.setVisible(true);
 	tile.setFrames(0, 0);
 	tile.setCurrentFrame(0);
 }
@@ -72,34 +75,35 @@ void FallParadise::update()
 {
 	float playerX;
 	float playerY;
-
-	planet.update(frameTime);
-	player.update(frameTime);
+	float scrollspeed = -200;
+	
 
 	// SCROLLING STUFF
 	if (mapY >= GAME_HEIGHT)
 	{
-		mapY = -TEXTURE_SIZE * MAP_HEIGHT - 128;
+		mapY = -TEXTURE_SIZE * MAP_HEIGHT;
 	}
 
 	// Vertical "Scrolling"
 	playerY = player.getY();
 	if (playerY < GAME_HEIGHT / 2)
 	{
-		player.setY(GAME_HEIGHT / 2 - 1); // So ship doesnt go past half way(ish)
 		if (input->isKeyDown(VK_UP))
 		{
-			mapY -= player.getVelocity().y * frameTime * 3;
+			mapY -= scrollspeed * frameTime;
 		}
 		else
 		{
-			mapY -= player.getVelocity().y * frameTime * 0.5;
+			mapY -= scrollspeed * frameTime;
 		}
 	}
 	else
 	{
-		mapY -= player.getVelocity().y * frameTime * 0.5;
+		mapY -= scrollspeed * frameTime;
 	}
+	
+	planet.update(frameTime);
+	player.update(frameTime);
 }
 
 //=============================================================================
@@ -140,14 +144,13 @@ void FallParadise::render()
 				tile.setY((float)(row * TEXTURE_SIZE) + mapY);   // set tile Y
 				// if tile on screen
 				if (tile.getY() > -TEXTURE_SIZE && tile.getY() < GAME_HEIGHT)
-					tile.draw();                // draw tile
+					tile.draw();
 			}
 		}
 	}
 
-	nebula.draw();                          // add the orion nebula to the scene
 	planet.draw();                          // add the planet to the scene
-	player.draw();                           // add the spaceship to the scene
+	player.draw();                           // add the player to the scene
 
 	graphics->spriteEnd();                  // end drawing sprites
 }

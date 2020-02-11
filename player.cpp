@@ -77,6 +77,10 @@ void Player::update(float frameTime)
 	if (spriteData.y < 0)
 	{
 		spriteData.y = 0;
+		velocity.y = -PlayerNS::SPEED;
+		deltaV.y = 0;
+		Yaccel = 0;
+		vely = 0;
 	}
 
 	if (spriteData.y > GAME_HEIGHT - spriteData.height) //Ported into states

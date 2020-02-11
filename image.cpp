@@ -93,14 +93,14 @@ bool Image::initialize(Graphics *g, int width, int height, int ncols,
 //=============================================================================
 void Image::draw(COLOR_ARGB color)
 {
-    if (!visible || graphics == NULL)
-        return;
-    // get fresh texture incase onReset() was called
-    spriteData.texture = textureManager->getTexture();
-    if(color == graphicsNS::FILTER)                     // if draw with filter
-        graphics->drawSprite(spriteData, colorFilter);  // use colorFilter
-    else
-        graphics->drawSprite(spriteData, color);        // use color as filter
+	if (!visible || graphics == NULL)
+		return;
+	// get fresh texture incase onReset() was called
+	spriteData.texture = textureManager->getTexture();
+	if (color == graphicsNS::FILTER)                     // if draw with filter
+		graphics->drawSprite(spriteData, colorFilter);  // use colorFilter
+	else
+		graphics->drawSprite(spriteData, color);        // use color as filter
 }
 
 //=============================================================================
@@ -111,15 +111,15 @@ void Image::draw(COLOR_ARGB color)
 //=============================================================================
 void Image::draw(SpriteData sd, COLOR_ARGB color)
 {
-    if (!visible || graphics == NULL)
-        return;
-    sd.rect = spriteData.rect;                  // use this Images rect to select texture
-    sd.texture = textureManager->getTexture();  // get fresh texture incase onReset() was called
+	if (!visible || graphics == NULL)
+		return;
+	sd.rect = spriteData.rect;                  // use this Images rect to select texture
+	sd.texture = textureManager->getTexture();  // get fresh texture incase onReset() was called
 
-    if(color == graphicsNS::FILTER)             // if draw with filter
-        graphics->drawSprite(sd, colorFilter);  // use colorFilter
-    else
-        graphics->drawSprite(sd, color);        // use color as filter
+	if (color == graphicsNS::FILTER)             // if draw with filter
+		graphics->drawSprite(sd, colorFilter);  // use colorFilter
+	else
+		graphics->drawSprite(sd, color);        // use color as filter
 }
 
 //=============================================================================

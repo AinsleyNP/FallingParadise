@@ -29,11 +29,11 @@
 //-----------------------------------------------
 
 // window
-const char CLASS_NAME[] = "Spacewar";
-const char GAME_TITLE[] = "Spacewar";
+const char CLASS_NAME[] = "FallParadise";
+const char GAME_TITLE[] = "FallParadise";
 const bool FULLSCREEN = false;              // windowed or fullscreen
 const UINT GAME_WIDTH =  640;               // width of game in pixels
-const UINT GAME_HEIGHT = 480;               // height of game in pixels
+const UINT GAME_HEIGHT = 896;               // height of game in pixels
 
 // game
 const double PI = 3.14159265;
@@ -48,7 +48,7 @@ const float MASS_PLAYER = 5.0f;
 // graphic images
 const char NEBULA_IMAGE[] =   "pictures\\orion.jpg";     // photo source NASA/courtesy of nasaimages.org 
 const char TEXTURES_IMAGE[] = "pictures\\textures.png";  // game textures
-const char TITE_TEXTURES[] = "pictures\\tiles.png";
+const char TILE_TEXTURES[] = "pictures\\tiles.png";
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
